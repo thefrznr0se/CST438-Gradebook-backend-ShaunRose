@@ -1,4 +1,3 @@
-
 INSERT INTO course (year, semester, course_id, title, instructor)  VALUES 
 (2020,'Fall',30157,'BUS 203 - Financial Accounting','cchou@csumb.edu'),
 (2020,'Fall',30163,'BUS 306 - Fundamentals of Marketing','anariswari@csumb.edu'),
@@ -11,7 +10,8 @@ INSERT INTO course (year, semester, course_id, title, instructor)  VALUES
 
 insert into assignment (id, due_date, name, course_id) values 
 (1, '2021-09-01', 'db design', 31045),
-(2, '2021-09-02', 'requirements', 31045)
+(2, '2021-09-02', 'requirements', 31045),
+(3, '2021-09-02', 'homework 1', 30157)
 ;
 
 insert into enrollment (id, student_email, student_name, course_id)  values
