@@ -28,30 +28,24 @@ public class RegistrationServiceREST implements RegistrationService {
     @Value("${registration.url}") 
     String registration_url;
 
-    public RegistrationServiceREST() {
-        System.out.println("REST registration service ");
-    }
-
-    @Override
-    public void sendFinalGrades(int course_id , FinalGradeDTO[] grades) { 
-        
-        //TODO use restTemplate to send final grades to registration service
-        System.out.println("Sending Final Grades: ");
-        restTemplate.put(registration_url + "/course/" + course_id);
-        
-    }
-
     @Autowired
     CourseRepository courseRepository;
 
     @Autowired
     EnrollmentRepository enrollmentRepository;
 
-    
-    /*
-     * endpoint used by the registration service to add an enrollment to an existing
-     * course.
-     */
+    public RegistrationServiceREST() {
+        System.out.println("REST registration service");
+    }
+
+    @Override
+    public void sendFinalGrades(int course_id, FinalGradeDTO[] grades) {
+        // TODO: Use restTemplate to send final grades to the registration service
+        System.out.println("Sending Final Grades: ");
+        // You need to implement the logic for sending final grades.
+        // Example: restTemplate.postForObject(registration_url + "/finalGrades/" + course_id, grades, Object.class);
+    }
+
     @PostMapping("/enrollment")
     @Transactional
     public EnrollmentDTO addEnrollment(@RequestBody EnrollmentDTO enrollmentDTO) {
@@ -59,30 +53,33 @@ public class RegistrationServiceREST implements RegistrationService {
 
         // Create a new Enrollment object based on the received EnrollmentDTO
         Enrollment enrollment = new Enrollment();
-        
-        // Assuming that Enrollment has properties like studentEmail, studentName, courseId, and enrollmentDate
-        // You should set these properties using the data from enrollmentDTO.
         enrollment.setStudentEmail(enrollmentDTO.studentEmail());
         enrollment.setStudentName(enrollmentDTO.studentName());
-        enrollment.setCourseId(enrollmentDTO.courseId());
+        
+        // You should look up the course from the repository based on courseId
+        Course course = courseRepository.findById(enrollmentDTO.courseId()).orElse(null);
+        if (course != null) {
+            enrollment.setCourse(course);
+            enrollment = enrollmentRepository.save(enrollment);
 
-        // Save the new enrollment to the database
-        enrollment = enrollmentRepository.save(enrollment);
+            // Convert the saved enrollment back to EnrollmentDTO and return it
+            EnrollmentDTO savedEnrollmentDTO = new EnrollmentDTO(
+                enrollment.getId(),
+                enrollment.getStudentEmail(),
+                enrollment.getStudentName(),
+                enrollment.getCourse().getCourse_id()
+            );
 
-        // Convert the saved enrollment back to EnrollmentDTO and return it
-        EnrollmentDTO savedEnrollmentDTO = new EnrollmentDTO(
-            enrollment.getId(),
-            enrollment.getStudentEmail(),
-            enrollment.getStudentName(),
-            enrollment.getCourseId()
-        );
-
-        return savedEnrollmentDTO;
+            return savedEnrollmentDTO;
+        } else {
+            // Handle the case where the course with the given courseId is not found.
+            // You can return an appropriate response or throw an exception.
+            return null;
+        }
     }
 
     @Override
     public void sendFinalGrades(int course, CourseDTOG courseDTO) {
-        // TODO Auto-generated method stub
-        
+        // TODO: Implement sending final grades for a specific course using the courseDTO.
     }
 }

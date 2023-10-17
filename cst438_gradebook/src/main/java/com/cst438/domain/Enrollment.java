@@ -75,6 +75,11 @@ public class Enrollment {
 				+ course + "]";
 	}
 
+	public void setCourse(int courseId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 }

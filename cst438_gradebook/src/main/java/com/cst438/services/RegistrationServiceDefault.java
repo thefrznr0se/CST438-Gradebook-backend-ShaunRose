@@ -3,6 +3,7 @@ package com.cst438.services;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import com.cst438.domain.CourseDTOG;
 import com.cst438.domain.FinalGradeDTO;
 
 @Service
@@ -14,6 +15,12 @@ public class RegistrationServiceDefault implements RegistrationService {
 	}
 	
 	public void sendFinalGrades(int course_id , FinalGradeDTO[] grades) {
+		
+	}
+
+	@Override
+	public void sendFinalGrades(int course, CourseDTOG courseDTO) {
+		// TODO Auto-generated method stub
 		
 	}
 
