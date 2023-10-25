@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.cst438.domain.Assignment;
-import com.cst438.domain.AssignmentDTO;
 import com.cst438.domain.AssignmentRepository;
 import com.cst438.domain.Course;
 import com.cst438.domain.CourseRepository;
+import com.cst438.dto.AssignmentDTO;
 
 @RestController
 @CrossOrigin 
@@ -53,6 +53,7 @@ public class AssignmentController {
 	}
 	
 	@GetMapping("/assignment/{id}")
+	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public AssignmentDTO getAssignment(@PathVariable("id") int id)  {
 		String instructorEmail = "dwisneski@csumb.edu";  // user name (should be instructor's email)
 		Assignment a = assignmentRepository.findById(id).orElse(null);
@@ -69,6 +70,7 @@ public class AssignmentController {
 	}
 	
 	@PostMapping("/assignment")
+	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public int createAssignment(@RequestBody AssignmentDTO adto) {
 		// check that course exists and belongs to this instructor
 		String instructorEmail = "dwisneski@csumb.edu";  // user name (should be instructor's email)
@@ -86,6 +88,7 @@ public class AssignmentController {
 	}
 	
 	@PutMapping("/assignment/{id}")
+	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public void updateAssignment(@PathVariable("id") int id, @RequestBody AssignmentDTO adto) {
 		// check assignment belongs to a course for this instructor
 	    String instructorEmail = "dwisneski@csumb.edu";  // user name (should be instructor's email)
@@ -99,6 +102,7 @@ public class AssignmentController {
 	}
 	
 	@DeleteMapping("/assignment/{id}")
+	@PreAuthorize("hasRole('INSTRUCTOR')")
 	public void deleteAssignment(@PathVariable("id") int id, @RequestParam("force") Optional<String> force) {
 		// check assignment belongs to a course for this instructor
 	    String instructorEmail = "dwisneski@csumb.edu";  // user name (should be instructor's email)

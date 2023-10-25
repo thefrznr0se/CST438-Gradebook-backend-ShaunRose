@@ -1,4 +1,4 @@
-package com.cst438.domain;
+package com.cst438.dto;
 
 import java.util.List;
 

@@ -11,7 +11,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.cst438.domain.AssignmentDTO;
+import com.cst438.dto.AssignmentDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest

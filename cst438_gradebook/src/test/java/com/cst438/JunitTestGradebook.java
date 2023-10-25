@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.cst438.domain.AssignmentGrade;
 import com.cst438.domain.AssignmentGradeRepository;
-import com.cst438.domain.GradeDTO;
+import com.cst438.dto.GradeDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /* 

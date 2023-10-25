@@ -22,8 +22,8 @@ import com.cst438.domain.AssignmentRepository;
 import com.cst438.domain.Course;
 import com.cst438.domain.CourseRepository;
 import com.cst438.domain.Enrollment;
-import com.cst438.domain.GradeDTO;
-import com.cst438.domain.FinalGradeDTO;
+import com.cst438.dto.FinalGradeDTO;
+import com.cst438.dto.GradeDTO;
 import com.cst438.services.RegistrationService;
 
 @RestController

@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.cst438.domain.FinalGradeDTO;
+import com.cst438.dto.CourseDTOG;
+import com.cst438.dto.EnrollmentDTO;
+import com.cst438.dto.FinalGradeDTO;
 import com.cst438.domain.Course;
-import com.cst438.domain.CourseDTOG;
 import com.cst438.domain.CourseRepository;
-import com.cst438.domain.EnrollmentDTO;
 import com.cst438.domain.EnrollmentRepository;
 import com.cst438.domain.Enrollment;
 

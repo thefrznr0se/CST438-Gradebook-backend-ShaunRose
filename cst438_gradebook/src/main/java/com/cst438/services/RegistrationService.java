@@ -1,7 +1,7 @@
 package com.cst438.services;
 
-import com.cst438.domain.CourseDTOG;
-import com.cst438.domain.FinalGradeDTO;
+import com.cst438.dto.CourseDTOG;
+import com.cst438.dto.FinalGradeDTO;
 
 public interface RegistrationService {
 	

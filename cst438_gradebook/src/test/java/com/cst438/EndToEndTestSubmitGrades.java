@@ -1,101 +1,46 @@
-package com.cst438;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.cst438.domain.AssignmentDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 public class EndToEndTestSubmitGrades {
 
-    @Autowired
-    private MockMvc mvc;
+    public static final String CHROME_DRIVER_FILE_LOCATION = "C:/chromedriver_win32/chromedriver.exe";
+    public static final String URL = "http://localhost:3000";
+    public static final int SLEEP_DURATION = 1000; // 1 second.
+    public static final String NEW_ASSIGNMENT_NAME = "New Assignment";
+    public static final String UPDATED_ASSIGNMENT_NAME = "Updated Assignment";
+    public static final String NEW_DUE_DATE = "2024-12-31";
 
-    @Test
-    public void addAssignmentTest() throws Exception {
-        AssignmentDTO adto = new AssignmentDTO(0, "Test Assignment", "2024-01-01", null, 31045);
-        MockHttpServletResponse response = mvc.perform(
-            MockMvcRequestBuilders
-                .post("/assignment")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(adto))
-                .accept(MediaType.APPLICATION_JSON))
-            .andReturn()
-            .getResponse();
+    WebDriver driver;
 
-        assertEquals(200, response.getStatus());
-        int newId = Integer.parseInt(response.getContentAsString());
-        assertTrue(newId > 0);
+    @BeforeEach
+    public void testSetup() throws Exception {
+        System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_FILE_LOCATION);
+        ChromeOptions ops = new ChromeOptions();
+        ops.addArguments("--remote-allow-origins=*");
+        driver = new ChromeDriver(ops);
+
+        driver.get(URL);
+        new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
     }
 
-    @Test
-    public void updateAssignmentTest() throws Exception {
-        AssignmentDTO adto = new AssignmentDTO(0, "Test Assignment", "2024-01-01", null, 31045);
-        MockHttpServletResponse response = mvc.perform(
-            MockMvcRequestBuilders
-                .post("/assignment")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(adto))
-                .accept(MediaType.APPLICATION_JSON))
-            .andReturn()
-            .getResponse();
 
-        assertEquals(200, response.getStatus());
-        int newId = Integer.parseInt(response.getContentAsString());
-        assertTrue(newId > 0);
-
-        AssignmentDTO adto2 = new AssignmentDTO(newId, "Updated Assignment", "2024-02-02", null, 0);
-        response = mvc.perform(
-            MockMvcRequestBuilders
-                .put("/assignment/" + newId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(adto2))
-                .accept(MediaType.APPLICATION_JSON))
-            .andReturn()
-            .getResponse();
-
-        assertEquals(200, response.getStatus());
-    }
-
-    @Test
-    public void deleteAssignmentTest() throws Exception {
-        AssignmentDTO adto = new AssignmentDTO(0, "Test Assignment", "2024-01-01", null, 31045);
-        MockHttpServletResponse response = mvc.perform(
-            MockMvcRequestBuilders
-                .post("/assignment")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(adto))
-                .accept(MediaType.APPLICATION_JSON))
-            .andReturn()
-            .getResponse();
-
-        assertEquals(200, response.getStatus());
-        int newId = Integer.parseInt(response.getContentAsString());
-        assertTrue(newId > 0);
-
-        response = mvc.perform(
-            MockMvcRequestBuilders
-                .delete("/assignment/" + newId))
-            .andReturn()
-            .getResponse();
-
-        assertEquals(200, response.getStatus());
-    }
-
-    private static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    @AfterEach
+    public void cleanup() {
+        if (driver != null) {
+            driver.close();
+            driver.quit();
         }
     }
 }
